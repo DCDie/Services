@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      TZ: Europe/Chisinau
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    networks:
+      - services-network
+  
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Chisinau
+    ports:
+      - "6379:6379"
+    networks:
+      - services-network
+  
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      TZ: Europe/Chisinau
+    volumes:
+      - ./JWStand/nginx.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    networks:
+      - services-network
+
+volumes:
+  postgres_data:
+    name: services_postgres_data
+  static_volume:
+    name: services_static_volume
+  media_volume:
+    name: services_media_volume
+
+networks:
+  services-network:
+    name: services-network
+    driver: bridge
+
