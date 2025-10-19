@@ -34,7 +34,7 @@ services:
     environment:
       TZ: Europe/Chisinau
     volumes:
-      - ./JWStand/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/app/staticfiles
       - media_volume:/app/media
     networks:
