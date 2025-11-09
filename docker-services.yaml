@@ -9,7 +9,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       TZ: Europe/Chisinau
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     networks:
